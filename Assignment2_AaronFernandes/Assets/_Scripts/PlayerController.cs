@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
 	public float Velocity = 10f;
 	public float JumpForce = 300f;
 	public Camera camera;
+	public Transform SpawnPoint;
 
 	//Fixed update for physics
 	void FixedUpdate(){
@@ -50,8 +51,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		this.camera.transform.position = new Vector3 (
-			this._transform.position.x * .8f,
-			this._transform.position.y * .8f,
+			this._transform.position.x,
+			this._transform.position.y,
 			-6.989258f
 		);
 	}
@@ -85,10 +86,21 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	private void OnCollisionEnter2D(Collision2D other){
+		//player hits the spawn point
+		if (other.gameObject.CompareTag ("DeathPlane")) {
+			// move player to spawn point
+ 			this._transform.position = this.SpawnPoint.position;
+			Debug.Log (this.SpawnPoint.position);
+		}
+	}
 
 	private void OnCollisionStay2D(Collision2D other){
 		if(other.gameObject.CompareTag("Platform")){
 			this._isGrounded=true;
+		}
+		if(other.gameObject.CompareTag("Wrap")){
+			this.transform.position = new Vector2(47f, 25f);
 		}
 	}
 
