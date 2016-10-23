@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour {
 			);
 
 			// check for jump key
-			if (Input.GetKeyDown (KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
+			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
 				this._jump = 1;
 			}
 		} else {
@@ -68,9 +68,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update () {}
 
 	//PRIVATE METHODS
 
