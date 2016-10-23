@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using UnityEngine.UI;
+
 public class PlayerController : MonoBehaviour {
 
 	//PRIVATE INSTANCE VARABLES
@@ -11,11 +13,13 @@ public class PlayerController : MonoBehaviour {
 	private bool _isFaceingRight;
 	private bool _isGrounded;
 	private Vector2 SpawnPoint;
+	private string[] _messages;
 
 	//PUBLIC INSTAND VARABLES
 	public float Velocity = 10f;
 	public float JumpForce = 300f;
 	public Camera camera;
+	public Text MessageText;
 
 
 	//Fixed update for physics
@@ -76,6 +80,8 @@ public class PlayerController : MonoBehaviour {
 		this._move = 0;
 		this._isFaceingRight = true;
 		this._isGrounded = false;
+
+		this._messages= new string[] {"Warp ahead! just run into it, You'll be fine","Wait. Your platform will come soon!"};
 	}
 
 	//filips the chars bitmay
@@ -98,6 +104,11 @@ public class PlayerController : MonoBehaviour {
 			
 	}
 
+	/// <summary>
+	/// Raises the collision stay2 d event
+	/// for when the player hits the platform
+	/// </summary>
+	/// <param name="other">Other.</param>
 	private void OnCollisionStay2D(Collision2D other){
 
 		if(other.gameObject.CompareTag("Platform")){
@@ -109,13 +120,36 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-
+	/// <summary>
+	/// Raises the collision exit2D to set isGrounded to false.
+	/// </summary>
+	/// <param name="other">Other.</param>
 	private void OnCollisionExit2D(Collision2D other){this._isGrounded = false;}
 
 
+	/// <summary>
+	/// Sets the message to help the user
+	/// </summary>
+	/// <param name="other">Other.</param>
 	void OnTriggerEnter2D(Collider2D other){
-		if(other.gameObject.CompareTag("Respawn")){
+		if (other.gameObject.CompareTag ("Respawn")) {
 			this.SpawnPoint = other.gameObject.GetComponent<Transform> ().position;
+		} else if (other.gameObject.CompareTag ("Message1")) {
+			MessageText.text = this._messages [0];
+		} else if (other.gameObject.CompareTag ("Message2")) {
+			MessageText.text = this._messages [1];
+		}
+	}
+
+
+	/// <summary>
+	/// Remove message when player exits
+	/// the scope of the message
+	/// </summary>
+	/// <param name="other">Other.</param>
+	void OnTriggerExit2D(Collider2D other){
+		if (other.gameObject.tag.StartsWith("Message")) {
+			MessageText.text ="";
 		}
 	}
 
