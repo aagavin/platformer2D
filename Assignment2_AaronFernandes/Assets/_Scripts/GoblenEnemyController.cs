@@ -7,11 +7,14 @@ public class GoblenEnemyController : MonoBehaviour {
 	private Rigidbody2D _rigidbody;
 	private bool _isGrounded;
 	private bool _isGroundAhead;
+	private bool _isPlayerDetected;
 
 	// public 
 	public float Speed = .01f;
+	public float MaxSpeed = 2f;
 	public Transform SightStart;
 	public Transform SightEnd;
+	public Transform LineOfSight;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +23,7 @@ public class GoblenEnemyController : MonoBehaviour {
 		this._rigidbody = GetComponent<Rigidbody2D> ();
 		this._isGrounded = false;
 		this._isGroundAhead = true;
+		this._isPlayerDetected = false;
 	}
 	
 	/// <summary>
@@ -39,12 +43,29 @@ public class GoblenEnemyController : MonoBehaviour {
 
 			);
 
+			this._isPlayerDetected = Physics2D.Linecast (
+				this.SightStart.position,
+				this.LineOfSight.position,
+				1 << LayerMask.NameToLayer ("Player")
+
+			);
+
 			// DEBUG
 			Debug.DrawLine(SightStart.position, SightEnd.position);
+			Debug.DrawLine(SightStart.position, LineOfSight.position);
 
 			if (this._isGroundAhead == false) {
 				// flip the direction
 				this._flip();
+			}
+
+			//check if player is dected and then increase speed
+			if (this._isPlayerDetected) {
+				//increse spped to 4
+				this.Speed *=1.02f;
+				if (this.Speed >= this.MaxSpeed) {
+					this.Speed = this.MaxSpeed;
+				}
 			}
 		}
 	}
@@ -85,4 +106,5 @@ public class GoblenEnemyController : MonoBehaviour {
 			this._flip ();
 		}
 	}
+
 }
