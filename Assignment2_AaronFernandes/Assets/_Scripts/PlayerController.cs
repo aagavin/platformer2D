@@ -98,7 +98,11 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.CompareTag ("DeathPlane")) {
 			// move player to spawn point
  			this._transform.position = this.SpawnPoint;
-		} 
+		}
+
+		if (other.gameObject.CompareTag ("Spike")) {
+			Debug.Log ("HIT SPIKE");
+		}
 			
 	}
 
@@ -132,11 +136,18 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.gameObject.CompareTag ("Respawn")) {
 			this.SpawnPoint = other.gameObject.GetComponent<Transform> ().position;
-		} else if (other.gameObject.CompareTag ("Message1")) {
+		}
+
+		if (other.gameObject.CompareTag ("Message1")) {
 			MessageText.text = this._messages [0];
 		} else if (other.gameObject.CompareTag ("Message2")) {
 			MessageText.text = this._messages [1];
 		}
+
+		if (other.gameObject.CompareTag ("Sand")) {
+			Destroy (other.gameObject);
+		}
+
 	}
 
 
