@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GoblenEnemyController : MonoBehaviour {
 
+	// private varables
 	private Transform _transform;
 	private Rigidbody2D _rigidbody;
 	private bool _isGrounded;
@@ -11,12 +12,14 @@ public class GoblenEnemyController : MonoBehaviour {
 
 	// public 
 	public float Speed = .01f;
-	public float MaxSpeed = 2f;
+	public float MaxSpeed = .11f;
 	public Transform SightStart;
 	public Transform SightEnd;
 	public Transform LineOfSight;
 
-	// Use this for initialization
+	/// <summary>
+	/// Use this for initialization
+	/// </summary>
 	void Start () {
 
 		this._transform = GetComponent<Transform> ();
@@ -94,6 +97,11 @@ public class GoblenEnemyController : MonoBehaviour {
 		}
 	}
 
+
+	/// <summary>
+	/// Raises the collision exit2 d event.
+	/// </summary>
+	/// <param name="other">Other.</param>
 	private void OnCollisionExit2D(Collision2D other){
 		if (other.gameObject.CompareTag ("Platform")) {
 			this._isGrounded = false;
@@ -101,6 +109,10 @@ public class GoblenEnemyController : MonoBehaviour {
 	}
 
 
+	/// <summary>
+	/// Raises the collision enter2 d event.
+	/// </summary>
+	/// <param name="other">Other.</param>
 	private void OnCollisionEnter2D(Collision2D other){
 		if (other.gameObject.CompareTag("Enemy")) {
 			this._flip ();

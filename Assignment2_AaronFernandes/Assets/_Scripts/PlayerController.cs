@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour {
 	public float JumpForce = 300f;
 	public Camera camera;
 	public Text MessageText;
-
+	public GameObject ScoreBoard;
 
 	//Fixed update for physics
 	void FixedUpdate(){
@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
 				this._jump = 1;
 			}
+				
 		} else {
 			this._move = 0f;
 			this._jump = 0f;
@@ -78,6 +79,8 @@ public class PlayerController : MonoBehaviour {
 		this._move = 0;
 		this._isFaceingRight = true;
 		this._isGrounded = false;
+
+
 
 		this._messages= new string[] {"Warp ahead! just run into it, You'll be fine","Wait. Your platform will come soon!"};
 	}
@@ -146,6 +149,13 @@ public class PlayerController : MonoBehaviour {
 
 		if (other.gameObject.CompareTag ("Sand")) {
 			Destroy (other.gameObject);
+		}
+
+
+
+		if(other.gameObject.CompareTag("Enemy") && (other.GetType()  == typeof(BoxCollider2D))){
+			Destroy (other.gameObject);
+			ScoreBoard.GetComponent<ScoreboardController> ().Score += 10;
 		}
 
 	}
