@@ -22,7 +22,16 @@ public class PlayerController : MonoBehaviour {
 	public Text MessageText;
 	public GameObject ScoreBoard;
 
-	//Fixed update for physics
+	[Header("Sound Clips")]
+	public AudioSource OuchSound;
+	public AudioSource TimeSound;
+	public AudioSource DeadEnemy;
+	public AudioSource PlayerHert;
+
+
+	/// <summary>
+	/// Fixed update for physics
+	/// </summary>
 	void FixedUpdate(){
 
 		if (this._isGrounded) {
@@ -73,6 +82,10 @@ public class PlayerController : MonoBehaviour {
 
 	//PRIVATE METHODS
 
+
+	/// <summary>
+	/// Initialisze this instance.
+	/// </summary>
 	private void _initialisze(){
 		this._transform = GetComponent<Transform> ();
 		this._rigidbody = GetComponent<Rigidbody2D> ();
@@ -85,7 +98,9 @@ public class PlayerController : MonoBehaviour {
 		this._messages= new string[] {"Warp ahead! just run into it, You'll be fine","Wait. Your platform will come soon!"};
 	}
 
-	//filips the chars bitmay
+	/// <summary>
+	/// Filips the charactors bitmat
+	/// </summary>
 	private void _flip(){
 		if (this._isFaceingRight) {
 			this._transform.localScale = new Vector2 (1f, 1f);
@@ -104,7 +119,10 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if (other.gameObject.CompareTag ("Spike")) {
-			Debug.Log ("HIT SPIKE");
+			OuchSound.Play ();
+			ScoreBoard.GetComponent<ScoreboardController> ().Time -= 10f;
+			ScoreBoard.GetComponent<ScoreboardController> ().Score -= 5f;
+
 		}
 			
 	}
@@ -148,14 +166,17 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if (other.gameObject.CompareTag ("Sand")) {
+			TimeSound.Play ();
 			Destroy (other.gameObject);
+			ScoreBoard.GetComponent<ScoreboardController> ().Time += 10f;
+			ScoreBoard.GetComponent<ScoreboardController> ().Score += 5f;
 		}
 
 
-
 		if(other.gameObject.CompareTag("Enemy") && (other.GetType()  == typeof(BoxCollider2D))){
+			DeadEnemy.Play ();
 			Destroy (other.gameObject);
-			ScoreBoard.GetComponent<ScoreboardController> ().Score += 10;
+			ScoreBoard.GetComponent<ScoreboardController> ().Score += 10f;
 		}
 
 	}
