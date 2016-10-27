@@ -1,6 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/*
+ * Aaron Fernandes
+ * 300773526
+ * 
+ * 2D Platformer
+ * 
+ */ 
+
+/// <summary>
+/// Goblen enemy controller.
+/// </summary>
 public class GoblenEnemyController : MonoBehaviour {
 
 	// private varables

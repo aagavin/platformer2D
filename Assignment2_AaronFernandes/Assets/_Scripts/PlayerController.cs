@@ -2,7 +2,20 @@
 using System.Collections;
 
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
+
+/*
+ * Aaron Fernandes
+ * 300773526
+ * 
+ * 2D Platformer
+ * 
+ */ 
+
+/// <summary>
+/// Player controller.
+/// </summary>
 public class PlayerController : MonoBehaviour {
 
 	//PRIVATE INSTANCE VARABLES
@@ -17,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 
 	//PUBLIC INSTAND VARABLES
 	public float Velocity = 10f;
-	public float JumpForce = 300f;
+	public float JumpForce = 500f;
 	public Camera camera;
 	public Text MessageText;
 	public GameObject ScoreBoard;
@@ -25,8 +38,9 @@ public class PlayerController : MonoBehaviour {
 	[Header("Sound Clips")]
 	public AudioSource OuchSound;
 	public AudioSource TimeSound;
-	public AudioSource DeadEnemy;
-	public AudioSource PlayerHert;
+	public AudioSource DeadEnemySound;
+	public AudioSource PlayerHurtSound;
+	public AudioSource WarpSound;
 
 
 	/// <summary>
@@ -95,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 
 
 
-		this._messages= new string[] {"Warp ahead! just run into it, You'll be fine","Wait. Your platform will come soon!"};
+		this._messages= new string[] {"Warp ahead! just run into it, You'll be fine","Wait. Your platform will come soon!", "Almost there. Collect your space ship part and play again"};
 	}
 
 	/// <summary>
@@ -109,6 +123,10 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Raises the collision enter2 d event.
+	/// </summary>
+	/// <param name="other">Other.</param>
 	private void OnCollisionEnter2D(Collision2D other){
 
 
@@ -116,6 +134,7 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.CompareTag ("DeathPlane")) {
 			// move player to spawn point
  			this._transform.position = this.SpawnPoint;
+			PlayerHurtSound.Play ();
 		}
 
 		if (other.gameObject.CompareTag ("Spike")) {
@@ -124,7 +143,10 @@ public class PlayerController : MonoBehaviour {
 			ScoreBoard.GetComponent<ScoreboardController> ().Score -= 5f;
 
 		}
-			
+
+		if (other.gameObject.CompareTag ("Enemy") && (other.GetType () == typeof(BoxCollider2D))) {
+			PlayerHurtSound.Play ();
+		}
 	}
 
 	/// <summary>
@@ -138,6 +160,7 @@ public class PlayerController : MonoBehaviour {
 			this._isGrounded=true;
 		}
 		if(other.gameObject.CompareTag("Wrap")){
+			WarpSound.Play ();
 			this.transform.position = new Vector2(47f, 25f);
 		}
 	}
@@ -163,6 +186,8 @@ public class PlayerController : MonoBehaviour {
 			MessageText.text = this._messages [0];
 		} else if (other.gameObject.CompareTag ("Message2")) {
 			MessageText.text = this._messages [1];
+		} else if (other.gameObject.CompareTag ("Message3")) {
+			MessageText.text = this._messages [2];
 		}
 
 		if (other.gameObject.CompareTag ("Sand")) {
@@ -173,8 +198,13 @@ public class PlayerController : MonoBehaviour {
 		}
 
 
+		if (other.gameObject.CompareTag ("EndPart")) {
+			Debug.Log ("HIT END");
+			SceneManager.LoadScene ("Play");
+		}
+
 		if(other.gameObject.CompareTag("Enemy") && (other.GetType()  == typeof(BoxCollider2D))){
-			DeadEnemy.Play ();
+			DeadEnemySound.Play ();
 			Destroy (other.gameObject);
 			ScoreBoard.GetComponent<ScoreboardController> ().Score += 10f;
 		}

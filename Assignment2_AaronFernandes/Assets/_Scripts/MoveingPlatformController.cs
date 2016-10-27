@@ -2,6 +2,15 @@
 using System.Collections;
 
 
+/*
+ * Aaron Fernandes
+ * 300773526
+ * 
+ * 2D Platformer
+ * 
+ */ 
+
+
 /// <summary>
 /// Moveing platform controller.
 /// Handles the moving of the platform

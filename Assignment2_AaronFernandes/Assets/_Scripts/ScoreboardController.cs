@@ -3,6 +3,17 @@ using System.Collections;
 using System;
 
 
+/*
+ * Aaron Fernandes
+ * 300773526
+ * 
+ * 2D Platformer
+ * 
+ */ 
+/// <summary>
+/// Scoreboard controller.
+/// </summary>
+
 using UnityEngine.UI;
 
 public class ScoreboardController : MonoBehaviour {
@@ -44,7 +55,7 @@ public class ScoreboardController : MonoBehaviour {
 	/// Use this for initialization
 	/// </summary>
 	void Start () {
-		this._time = 300f;
+		this._time = 500f;
 	}
 	
 	/// <summary>
